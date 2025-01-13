@@ -40,9 +40,9 @@ class BalanceService
             $this->updateBalance($balance, $dto->amount);
 
             // Можно конечно использовать queue
-            \Illuminate\Support\defer(function () use ($dto) {
+//            \Illuminate\Support\defer(function () use ($dto) {
                 $this->createTransaction(UserBalanceEntity::DEPOSITY, $dto);
-            });
+//            });
         });
     }
 
@@ -126,7 +126,7 @@ class BalanceService
      * @param DataDtoInterface $dto
      * @return void
      */
-    private function createTransaction(string $operationType, DataDtoInterface $dto): void
+    public function createTransaction(string $operationType, DataDtoInterface $dto): void
     {
         $data = [
             TransactionEntity::USER_ID => isset($dto->userId) ? $dto->userId : $dto->fromUserId,
@@ -183,7 +183,7 @@ class BalanceService
      * @param float $amount
      * @return void
      */
-    private function updateBalance(UserBalance $balance, float $amount): void
+    public function updateBalance(UserBalance $balance, float $amount): void
     {
         $balance->balance += $amount;
         $balance->save();
